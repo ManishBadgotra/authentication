@@ -18,17 +18,17 @@ func init() {
 }
 
 func main() {
-	router := gin.Default
+	router := gin.Default()
 
-	open := router().Group("/api/user")
-	secure := router().Group("/api/user").Use(middlewares.ValidateToken)
+	open := router.Group("/api/user")
+	secure := router.Group("/api/user").Use(middlewares.ValidateToken)
 
-	router().Use(cors.New(helpers.CorsConfig))
+	router.Use(cors.New(helpers.CorsConfig))
 	open.Use(cors.New(helpers.CorsConfig))
 	secure.Use(cors.New(helpers.CorsConfig))
 
 	open.POST("/signup", controllers.Signup)
 	secure.GET("/checkstatus", controllers.CheckStatus)
 
-	router().Run(helpers.GetString("JwtSecretKey"))
+	router.Run(helpers.GetString("Port"))
 }
